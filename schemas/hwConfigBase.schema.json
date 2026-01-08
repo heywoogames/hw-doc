@@ -113,11 +113,13 @@
                 },
                 "namespace": {
                   "type": "string",
-                  "description": "finder 命名空间"
+                  "description": "finder 命名空间",
+                  "default": "hw"
                 },
                 "group": {
                   "type": "string",
-                  "description": "finder 分组"
+                  "description": "finder 分组",
+                  "default": "pro"
                 },
                 "redis":{
                   "type": "object",
@@ -343,7 +345,6 @@
           },
           "then": {
             "required": [
-              "path",
               "port"
             ]
           }
