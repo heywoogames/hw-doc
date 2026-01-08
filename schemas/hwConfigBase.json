@@ -1,0 +1,455 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "title": "heywoo framework Config Schemas",
+  "type": "object",
+  "description": "heywoo 框架配置文件",
+  "$defs": {
+    "pluginCfg": {
+      "type": "object",
+      "description": "插件配置",
+      "properties": {
+        "enable": {
+          "type": "boolean",
+          "description": "是否启用插件",
+          "default": true
+        },
+        "package": {
+          "type": "string",
+          "description": "插件包名"
+        },
+        "path": {
+          "type": "string",
+          "description": "插件路径"
+        },
+        "alias": {
+          "type": "string",
+          "description": "插件别名"
+        },
+        "optionalDependencies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "插件可选依赖"
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "插件依赖"
+        },
+        "cfgName": {
+          "type": "string",
+          "description": "插件配置文件名"
+        },
+        "extCfg": {
+          "type": "object",
+          "description": "插件外部配置"
+        }
+      }
+    }
+  },
+  "properties": {
+    "mservice": {
+      "type": "object",
+      "description": "微服务配置",
+      "properties": {
+        "enable": {
+          "type": "boolean",
+          "description": "是否启用微服务",
+          "default": true
+        },
+        "path": {
+          "type": "string",
+          "description": "微服务路径",
+          "default": "mservices"
+        },
+        "ip": {
+          "type": "string",
+          "description": "微服务 IP"
+        },
+        "port": {
+          "type": "integer",
+          "description": "微服务端口"
+        },
+        "cors": {
+          "anyOf": [
+            {
+              "type": "boolean",
+              "enum": [
+                true
+              ],
+              "description": "开启所有"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "CORS 允许的域名列表 | 或者正则",
+              "default": [
+                "regex:127.0.0.1:[0-9]{1,}"
+              ]
+            }
+          ]
+        },
+        "finder": {
+          "type": "object",
+          "description": "finder 服务/配置 发现配置",
+          "properties": {
+            "enable": {
+              "type": "boolean",
+              "description": "是否启用 finder",
+              "default": true
+            },
+            "base": {
+              "type": "object",
+              "description": "finder 基础配置",
+              "properties": {
+                "serverAddr": {
+                  "type": "string",
+                  "description": "finder 地址"
+                },
+                "namespace": {
+                  "type": "string",
+                  "description": "finder 命名空间"
+                },
+                "group": {
+                  "type": "string",
+                  "description": "finder 分组"
+                },
+                "redis":{
+                  "type": "object",
+                  "description": "Redis 配置",
+                  "properties": {
+                    "host": {
+                      "type": "string",
+                      "description": "Redis 主机"
+                    },
+                    "port": {
+                      "type": "integer",
+                      "description": "Redis 端口"
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "Redis 用户名"
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "Redis 密码"
+                    },
+                    "db": {
+                      "type": "integer",
+                      "description": "Redis 数据库",
+                      "default": 1
+                    }
+                  },
+                  "required": [
+                    "host",
+                    "port",
+                    "db"
+                  ]
+                }
+              },
+              "required": [
+                "serverAddr",
+                "redis"
+              ]
+            },
+            "naming": {
+              "type": "object",
+              "description": "finder 服务发现配置",
+              "properties": {
+                "enable": {
+                  "type": "boolean",
+                  "description": "是否启用 finder 服务发现",
+                  "default": true
+                },
+                "serverList": {
+                  "type": "string",
+                  "description": "Nacos 服务发现地址列表",
+                  "default": "127.0.0.1:8848"
+                },
+                "serviceName": {
+                  "type": "string",
+                  "description": "服务名",
+                  "default": "hw.qt.*"
+                },
+                "namespace": {
+                  "type": "string",
+                  "description": "finder 命名空间",
+                  "default": "hw"
+                },
+                "group": {
+                  "type": "string",
+                  "description": "finder 分组",
+                  "default": "pro"
+                },
+                "subscribe": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "serviceName": {
+                        "type": "string",
+                        "description": "服务名"
+                      }
+                    },
+                    "required": [
+                      "serviceName"
+                    ]
+                  },
+                  "description": "订阅的服务列表",
+                  "default": [
+                    "hw.qt.*"
+                  ]
+                },
+                "redis": {
+                  "type": "object",
+                  "description": "Redis 配置",
+                  "properties": {
+                    "host": {
+                      "type": "string",
+                      "description": "Redis 主机",
+                      "default": "127.0.0.1"
+                    },
+                    "port": {
+                      "type": "integer",
+                      "description": "Redis 端口",
+                      "default": 6379
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "Redis 密码",
+                      "default": ""
+                    },
+                    "db": {
+                      "type": "integer",
+                      "description": "Redis 数据库",
+                      "default": 1
+                    }
+                  }
+                }
+              }
+            },
+            "config": {
+              "type": "object",
+              "description": "finder 配置发现配置",
+              "properties": {
+                "enable": {
+                  "type": "boolean",
+                  "description": "是否启用 finder 配置发现",
+                  "default": true
+                },
+                "serverAddr": {
+                  "type": "string",
+                  "description": "Nacos 配置发现地址列表",
+                  "default": "127.0.0.1:8848"
+                },
+                "namespace": {
+                  "type": "string",
+                  "description": "finder 命名空间",
+                  "default": "qt"
+                },
+                "group": {
+                  "type": "string",
+                  "description": "finder 分组",
+                  "default": "pro"
+                },
+                "dependencies": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "依赖的配置列表",
+                  "default": [
+                    "redis"
+                  ]
+                },
+                "subscribe": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "dataId": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "description": "订阅的配置列表",
+                  "default": [
+                    "redis"
+                  ]
+                }
+              }
+            }
+          },
+          "required": [
+            "enable"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "enable": {
+                    "const": true
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "driver"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "driver": {
+                    "const": "redis"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "naming": {
+                    "properties": {
+                      "redis": {
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "redis"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "enable"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "enable": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "path",
+              "port"
+            ]
+          }
+        }
+      ]
+    },
+    "plugins": {
+      "type": "object",
+      "description": "插件配置",
+      "additionalProperties": {
+        "$ref": "#/$defs/pluginCfg"
+      }
+    },
+    "mcache": {
+      "type": "object",
+      "description": "内存缓存配置",
+      "properties": {
+        "forceString": {
+          "type": "boolean",
+          "description": "是否强制将缓存值转换为字符串",
+          "default": false
+        },
+        "checkperiod": {
+          "type": "integer",
+          "description": "缓存检查周期，单位秒",
+          "default": 300
+        },
+        "stdTTL": {
+          "type": "integer",
+          "description": "缓存默认过期时间，单位秒 0 = infinity",
+          "default": 0
+        },
+        "useClones": {
+          "type": "boolean",
+          "description": "是否启用克隆缓存值",
+          "default": true
+        },
+        "deleteOnExpire": {
+          "type": "boolean",
+          "description": "是否在过期时删除缓存值",
+          "default": true
+        },
+        "maxKeys": {
+          "type": "integer",
+          "description": "最大缓存键数 -1 = infinity",
+          "default": -1
+        },
+        "objectValueSize": {
+          "type": "integer",
+          "description": "对象值大小,用于计算缓存大小",
+          "default": 80
+        },
+        "promiseValueSize": {
+          "type": "integer",
+          "description": "Promise 值大小,用于计算缓存大小",
+          "default": 80
+        },
+        "arrayValueSize": {
+          "type": "integer",
+          "description": "数组值大小,用于计算缓存大小",
+          "default": 40
+        }
+      }
+    },
+    "serviceName": {
+      "type": "string",
+      "description": "服务名称，在 config.json 里的配置,没有不会记录到redis(用于简单的没有开启 finder用)"
+    },
+    "compsPath": {
+      "type": "string",
+      "description": "组件存放路径，缺省 在项目根目录下 comps 下"
+    },
+    "nodeName": {
+      "type": "string",
+      "description": "节点名"
+    },
+    "cfgRedis": {
+      "type": "object",
+      "description": "配置 节点 Redis 配置",
+      "properties": {
+        "enable": {
+          "type": "boolean",
+          "description": "是否启用 节点 Redis 配置",
+          "default": false
+        },
+        "key": {
+          "type": "string",
+          "description": "配置 Redis 键",
+          "default": "appCfg"
+        },
+        "mqAlias": {
+          "type": "string",
+          "description": "MQ Bridge 别名",
+          "default": "_mqb"
+        },
+        "rdAlias": {
+          "type": "string",
+          "description": "Redis 别名",
+          "default": "_rd"
+        }
+      }
+    }
+  },
+  "required": [
+    "mservice",
+    "plugins",
+    "serviceName"
+  ]
+}
